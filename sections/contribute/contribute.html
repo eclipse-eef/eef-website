@@ -95,9 +95,64 @@
   <p>In order to schedule a release, some steps have to be completed for the Eclipse Foundation:</p>
   <ul>
     <li>Create or update the release record for the release using the <a href="https://projects.eclipse.org/projects/modeling.emft.eef/governance">Eclipse PMI</a></li>
-    <li>Use the committer tools to send the IP Log to EMO</li>
+    <li>Use the committer tools <a href="https://projects.eclipse.org/projects/modeling.emft.eef/generate-iplog">to send the IP Log to EMO</a></li>
     <li>Once the IP Log has been validated by the EMO, attach it to the release record</li>
     <li>Ask the Eclipse Modeling PMC for the approval of the release review</li>
     <li>Schedule the release using the Eclipse PMI</li>
   </ul>
+
+  <h3>Contribute the code</h3>
+  <p>
+    In order to deliver the code to our end users, you will need to publish an update site with our plugins and features. First, you will need to build a nightly build containing all the changes that you want to release. This nightly build will be available on build.eclipse.org in the "updates/nightly" folder of the EEF project:
+  </p>
+  <ul>
+    <li>Nightly - /home/data/httpd/download.eclipse.org/modeling/emft/eef/updates/nightly</li>
+    <li>Milestones - /home/data/httpd/download.eclipse.org/modeling/emft/eef/updates/milestones/</li>
+    <li>Releases - /home/data/httpd/download.eclipse.org/modeling/emft/eef/updates/releases</li>
+  </ul>
+
+  <p>
+    Once this nightly build has been tested and approved, you can promote it in order to be retrieved by the end users. For that, you can promote the nightly build to a milestone build by copying the update site of the nightly build as a stable build. The stable build in the milestones repository must be located under the major version number of the milestone.
+  </p>
+  <ul>
+    <li>Nightly Build - /home/data/httpd/download.eclipse.org/modeling/emft/eef/updates/nightly/1.7.0-N20160624-102030/neon/</li>
+    <li>Stable Build - /home/data/httpd/download.eclipse.org/modeling/emft/eef/updates/milestones/1.7/S20160624102030</li>
+  </ul>
+
+  <p>
+    Finally, in order to promote a build to a final release, you will have to copy the content of the milestone build in the release build. You will also need to update the composite artifacts and composite content files for the composite update site of the release.
+  </p>
+  <ul>
+    <li>Stable Build - /home/data/httpd/download.eclipse.org/modeling/emft/eef/updates/milestones/1.7/S20160624102030</li>
+    <li>Release Build - /home/data/httpd/download.eclipse.org/modeling/emft/eef/updates/releases/1.7/R20160624102030</li>
+  </ul>
+  <p>
+    In order to update the content of the composite update site, you can use the code below. This code will need to be run in the folder of the version of the release, for example "/home/data/httpd/download.eclipse.org/modeling/emft/eef/updates/releases/1.6/" and you will need to replace the URLs of the repository that needs to be accessible:
+  </p>
+  <pre><code>export P2_TIMESTAMP=$(date +"%s000")
+cat &gt; "compositeArtifacts.xml" &lt;&lt;EOF
+&lt;?xml version='1.0' encoding='UTF-8'?&gt;
+&lt;?compositeArtifactRepository version='1.0.0'?&gt;
+&lt;repository name='Eclipse EEF 1.6' type='org.eclipse.equinox.internal.p2.artifact.repository.CompositeArtifactRepository' version='1.0.0'&gt;
+  &lt;properties size='1'&gt;
+    &lt;property name='p2.timestamp' value='$P2_TIMESTAMP'/&gt;
+  &lt;/properties&gt;
+  &lt;children size='1'&gt;
+    &lt;child location='http://download.eclipse.org/modeling/emft/eef/updates/releases/1.6/R20160525090447'/&gt;
+  &lt;/children&gt;
+&lt;/repository&gt;
+EOF
+cat &gt; "compositeContent.xml" &lt;&lt;EOF
+&lt;?xml version='1.0' encoding='UTF-8'?&gt;
+&lt;?compositeMetadataRepository version='1.0.0'?&gt;
+&lt;repository name='Eclipse EEF 1.6' type='org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository' version='1.0.0'&gt;
+  &lt;properties size='1'&gt;
+    &lt;property name='p2.timestamp' value='$P2_TIMESTAMP'/&gt;
+  &lt;/properties&gt;
+  &lt;children size='1'&gt;
+    &lt;child location='http://download.eclipse.org/modeling/emft/eef/updates/releases/1.6/R20160525090447'/&gt;
+  &lt;/children&gt;
+&lt;/repository&gt;
+EOF
+</code></pre>
 </md-content>
