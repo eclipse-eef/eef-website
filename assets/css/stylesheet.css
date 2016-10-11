@@ -489,3 +489,12 @@ img.validation1-6-0 {
   max-width:70%;
   max-height:70%;
 }
+
+.documentation ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+[ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak {
+    display: none;
+}
