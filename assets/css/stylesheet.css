@@ -498,3 +498,25 @@ img.validation1-6-0 {
 [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak {
     display: none;
 }
+
+/* Cookies Consent
+
+------------------------------ */
+
+.cc-color-override-1434350510.cc-window, .cc-color-override-1434350510.cc-revoke, .cc-color-override-1434350510 .cc-btn {
+  font-family: Roboto,"Helvetica Neue",sans-serif !important;
+  }
+
+.cc-color-override-1434350510.cc-window, .cc-color-override-1434350510.cc-revoke {
+background-color: #7986CB !important;
+}
+.cc-color-override-1434350510 .cc-btn:last-child {
+background-color: #rgb(57,73,171) !important;}
+
+.cc-color-override-1434350510 .cc-btn:hover, .cc-color-override-1434350510 .cc-btn:focus {
+  background-color: #7986CB !important;
+}
+
+.cc-banner .cc-message {
+  padding-right: 50px;
+}
